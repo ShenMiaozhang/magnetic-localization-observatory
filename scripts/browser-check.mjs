@@ -26,7 +26,7 @@ const checks = [], errors = [], requests = []
 const check = (name, detail) => checks.push({ name, pass: true, detail })
 try {
   browser = await chromium.launch({ executablePath, headless: true, args: ['--enable-webgl', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] })
-  page = await browser.newPage({ viewport: { width: 1600, height: 1000 } })
+  page = await browser.newPage({ viewport: { width: 1600, height: 1000 }, locale: 'en-US' })
   page.on('pageerror', error => errors.push(error.message))
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()) })
   page.on('request', request => requests.push(request.url()))
