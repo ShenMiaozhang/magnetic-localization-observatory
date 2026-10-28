@@ -1,0 +1,10 @@
+node_modules/
+dist/
+qa/
+.env
+.env.*
+*.local
+task_plan.md
+notes.md
+RELEASE_REVIEW.md
+.DS_Store
