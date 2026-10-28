@@ -21,12 +21,12 @@ if (!process.env.OBSERVATORY_URL) {
   if (!ready) { server.kill(); throw new Error('Preview could not start on 4174') }
 }
 const executablePath = process.env.CHROME_PATH || (process.platform === 'win32' ? 'C:/Program Files/Google/Chrome/Application/chrome.exe' : undefined)
-let browser
+let browser, page
 const checks = [], errors = [], requests = []
 const check = (name, detail) => checks.push({ name, pass: true, detail })
 try {
-  browser = await chromium.launch({ executablePath, headless: true, args: ['--enable-webgl', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] })
-  const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } })
+  browser = await chromium.launch({ executablePath, headless: true, args: ['--enable-webgl', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] })
+  page = await browser.newPage({ viewport: { width: 1600, height: 1000 } })
   page.on('pageerror', error => errors.push(error.message))
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()) })
   page.on('request', request => requests.push(request.url()))
@@ -166,6 +166,12 @@ try {
   const report = { pass: true, checks, errors }
   fs.writeFileSync(path.join(qa, 'browser-verification.json'), JSON.stringify(report, null, 2))
   console.log(JSON.stringify(report))
+} catch (error) {
+  const diagnostic = { error: String(error), errors, requests, body: await page?.locator('body').innerText().catch(() => '') }
+  fs.writeFileSync(path.join(qa, 'browser-failure.json'), JSON.stringify(diagnostic, null, 2))
+  await page?.screenshot({ path: path.join(qa, 'browser-failure.png'), fullPage: true }).catch(() => {})
+  console.error(JSON.stringify(diagnostic))
+  throw error
 } finally {
   await browser?.close()
   if (server) server.kill()
