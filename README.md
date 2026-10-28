@@ -6,6 +6,16 @@ A bilingual, browser-based physics instrument for exploring how magnetic dipoles
 are sampled by a three-axis sensor array. All displayed observations are
 **synthetic**, computed locally from an analytic forward model.
 
+## Screenshots
+
+**Target dipole only**
+
+![Single target dipole, sensor-array observations and field-component plots](docs/images/physics-single-source.png)
+
+**With an interfering dipole and field section**
+
+![Target and interfering dipoles with a horizontal field section and superposed sensor observations](docs/images/physics-interfering-source.png)
+
 ## Explore
 
 - Move a magnet with numeric controls or its 3D translation gizmo.
