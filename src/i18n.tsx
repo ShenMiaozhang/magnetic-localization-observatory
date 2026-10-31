@@ -6,6 +6,7 @@ const chinese: Record<string, string> = {
   'Magnetic Localization': '磁定位', 'Observatory': '观测台',
   'Magnetic Localization Observatory': '磁定位观测台',
   'Physics Playground': '物理演示', 'Synthetic Demo': '合成演示',
+  'SUSTech · Department of Electronic and Electrical Engineering': '南方科技大学 · 电子与电气工程系',
   'Interface language': '界面语言', 'Model details': '模型说明', 'Close model details': '关闭模型说明',
   'Source code': '源代码', 'Parameters': '参数', 'Scene': '场景', 'Observations': '观测',
   'Target magnet': '目标磁铁', 'Reset physics': '重置物理参数',

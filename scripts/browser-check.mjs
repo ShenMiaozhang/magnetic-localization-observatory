@@ -52,6 +52,11 @@ try {
   await page.goto(`${base}?lang=zh`, { waitUntil: 'networkidle' })
   await page.locator('.scene-viewport canvas').waitFor()
   await page.waitForTimeout(1100)
+  const officialMark = page.locator('.institution-logo')
+  assert.deepEqual(await officialMark.evaluate(image => [image.complete, image.naturalWidth, image.naturalHeight]), [true, 473, 64])
+  assert.equal(await officialMark.getAttribute('alt'), '南方科技大学 · 电子与电气工程系')
+  assert.equal(await page.locator('.institutional-branding a').getAttribute('href'), 'https://eee.sustech.edu.cn/')
+  check('Official university/department lockup loads locally, with bilingual accessible text')
   assert.match(await page.title(), /磁定位/)
   assert.equal(await page.getByTestId('sensor-heatmap').getByRole('button').count(), 25)
   const initial = await pixels()
@@ -141,13 +146,18 @@ try {
   await page.getByRole('button', { name: 'Reset physics', exact: true }).click()
   for (const language of ['zh', 'en']) {
     await page.getByRole('button', { name: language === 'zh' ? '中文' : 'English', exact: true }).click()
-    for (const view of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 360, height: 800 }]) {
+    for (const view of [{ width: 1440, height: 900 }, { width: 1024, height: 800 }, { width: 768, height: 900 }, { width: 390, height: 844 }, { width: 360, height: 800 }]) {
       await page.setViewportSize(view); await page.waitForTimeout(350)
       const layout = await page.evaluate(() => {
         const brand = document.querySelector('.brand').getBoundingClientRect(), actions = document.querySelector('.header-actions').getBoundingClientRect()
-        return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, headerOverlap: brand.right > actions.left }
+        const logo = document.querySelector('.institution-logo').getBoundingClientRect(), identity = document.querySelector('.identity-block').getBoundingClientRect()
+        const overlaps = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom
+        return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, headerOverlap: brand.right > actions.left, logoOverlap: overlaps(logo, identity) || overlaps(logo, actions), logoInsideViewport: logo.left >= 0 && logo.right <= innerWidth, aspectRatio: logo.width / logo.height }
       })
       assert.equal(layout.scrollWidth, view.width); assert.equal(layout.headerOverlap, false)
+      assert.equal(layout.logoOverlap, false); assert.equal(layout.logoInsideViewport, true)
+      assert.ok(Math.abs(layout.aspectRatio - 473 / 64) < .01)
+      assert.equal(await officialMark.getAttribute('alt'), language === 'zh' ? '南方科技大学 · 电子与电气工程系' : 'SUSTech · Department of Electronic and Electrical Engineering')
       const rendered = await pixels(); assert.ok(rendered.dark > 100 && rendered.colored > 100, JSON.stringify(rendered))
       assert.doesNotMatch(await page.locator('body').innerText(), /T-RO|NOKOV|Experimental Replay|实验回放/)
       await page.screenshot({ path: path.join(qa, `public-${language}-${view.width}.png`) })

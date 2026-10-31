@@ -19,3 +19,13 @@ See the [color-order documentation](https://www.mathworks.com/help/matlab/ref/co
 Interaction inspiration: [Induction Bench](https://github.com/thebuggeddev/electromagnetism).
 No source artwork or finite-cylinder/coil model from that project is included.
 The scene uses procedural geometry rather than external images or recordings.
+
+## Institutional marks
+
+The page header uses the unmodified SUSTech / Department of Electronic and
+Electrical Engineering logo combination from the [department's official
+website](https://eee.sustech.edu.cn/). Institutional names and marks remain the
+property of their respective rights holders and are **not covered by this
+project's MIT license**. Their inclusion identifies institutional context; it
+does not claim institutional endorsement or an official university service.
+Source URL and asset checksum: [branding provenance](docs/BRANDING.md).

@@ -81,8 +81,11 @@ registered reference trajectories, inverse-localization solver or robot-control
 interface. It makes no experimental accuracy or safety claim.
 
 `npm run build` checks an explicit source/build allowlist and rejects unreviewed
-assets or known private-source signatures. `public/` contains only the favicon
-and generated third-party license notices.
+assets or known private-source signatures. `public/` contains only the favicon,
+generated third-party license notices and the checksum-verified official
+SUSTech / EEE header artwork. The original logo colors and proportions are
+preserved; [artwork provenance and rights](docs/BRANDING.md) are separate from
+the software's MIT license.
 There is no data endpoint, upload service, analytics or hardware connection.
 
 The Pages workflow tests and builds the app and publishes **only `dist/`**.

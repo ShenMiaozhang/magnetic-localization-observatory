@@ -76,7 +76,18 @@ export default function App() {
   const capture = () => { const canvas = viewport.current?.querySelector('canvas'); if (canvas) { const a = document.createElement('a'); a.href = canvas.toDataURL('image/png'); a.download = 'magnetic-physics-scene.png'; a.click() } }
 
   return <div className="app-shell">
-    <header className="header"><div className="brand"><Magnet size={23} /><h1>{t('Magnetic Localization')} <strong>{t('Observatory')}</strong></h1></div><span className="workspace-label">{t('Physics Playground')}</span><span className="synthetic-tag">{t('Synthetic Demo')}</span><div className="header-actions"><IconButton label="Model details" onClick={() => setDetails(true)}><Info size={17} /></IconButton><a className="icon-button" href="https://github.com/ShenMiaozhang/magnetic-localization-observatory" title={t('Source code')} aria-label={t('Source code')} target="_blank" rel="noreferrer"><Github size={17} /></a><div className="language-switch" role="group" aria-label={t('Interface language')}><button aria-pressed={language === 'zh'} onClick={() => setLanguage('zh')}>中文</button><button aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>English</button></div></div></header>
+    <header className="header">
+      <div className="identity-block">
+        <div className="brand"><Magnet size={23} /><h1>{t('Magnetic Localization')} <strong>{t('Observatory')}</strong></h1></div>
+        <div className="workspace-meta"><span className="workspace-label">{t('Physics Playground')}</span><span className="synthetic-tag">{t('Synthetic Demo')}</span></div>
+      </div>
+      <div className="institutional-branding">
+        <a href="https://eee.sustech.edu.cn/" target="_blank" rel="noreferrer" title={t('SUSTech · Department of Electronic and Electrical Engineering')}>
+          <img className="institution-logo" src="./branding/sustech-eee.png" width="473" height="64" alt={t('SUSTech · Department of Electronic and Electrical Engineering')} decoding="async" />
+        </a>
+      </div>
+      <div className="header-actions"><IconButton label="Model details" onClick={() => setDetails(true)}><Info size={17} /></IconButton><a className="icon-button" href="https://github.com/ShenMiaozhang/magnetic-localization-observatory" title={t('Source code')} aria-label={t('Source code')} target="_blank" rel="noreferrer"><Github size={17} /></a><div className="language-switch" role="group" aria-label={t('Interface language')}><button aria-pressed={language === 'zh'} onClick={() => setLanguage('zh')}>中文</button><button aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>English</button></div></div>
+    </header>
     <div className="mobile-switch"><button className={mobilePane === 'controls' ? 'active' : ''} onClick={() => setMobilePane('controls')}><Settings2 size={14} />{t('Parameters')}</button><button className={mobilePane === 'scene' ? 'active' : ''} onClick={() => setMobilePane('scene')}><Box size={14} />{t('Scene')}</button><button className={mobilePane === 'observations' ? 'active' : ''} onClick={() => setMobilePane('observations')}><Radio size={14} />{t('Observations')}</button></div>
     <main className={`workbench mobile-${mobilePane}`}>
       <aside className="left-panel">
